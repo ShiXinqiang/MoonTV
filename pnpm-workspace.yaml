@@ -1,0 +1,7 @@
+# Native dependencies used by the build tools and local Cloudflare runtime.
+# pnpm 10 (the deployment version) uses onlyBuiltDependencies.
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - unrs-resolver
+  - workerd

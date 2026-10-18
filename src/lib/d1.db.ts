@@ -1,5 +1,7 @@
 /* eslint-disable no-console, @typescript-eslint/no-explicit-any, @typescript-eslint/no-non-null-assertion */
 
+import { getRequestContext } from '@cloudflare/next-on-pages';
+
 import { AdminConfig } from './admin.types';
 import { Favorite, IStorage, PlayRecord, SkipConfig } from './types';
 
@@ -37,19 +39,21 @@ interface D1ExecResult {
   duration: number;
 }
 
-// 获取全局D1数据库实例
+// D1 是请求上下文中的资源绑定，不是普通的字符串环境变量。
 function getD1Database(): D1Database {
-  return (process.env as any).DB as D1Database;
+  const db = (getRequestContext().env as { DB?: D1Database }).DB;
+  if (!db || typeof db.prepare !== 'function') {
+    throw new Error(
+      '未找到 D1 数据库绑定 DB，请按 docs/cloudflare-pages.md 配置后重新部署。'
+    );
+  }
+  return db;
 }
 
 export class D1Storage implements IStorage {
-  private db: D1Database | null = null;
-
   private async getDatabase(): Promise<D1Database> {
-    if (!this.db) {
-      this.db = getD1Database();
-    }
-    return this.db;
+    // 每次从当前请求读取绑定，避免跨请求缓存资源句柄。
+    return getD1Database();
   }
 
   // 播放记录相关

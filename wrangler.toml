@@ -1,0 +1,9 @@
+# Cloudflare Pages project configuration (not a Workers configuration).
+name = "shixinqiang-moontv"
+pages_build_output_dir = ".vercel/output/static"
+compatibility_date = "2025-06-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Set PASSWORD as an encrypted secret in the Cloudflare dashboard.
+# Never commit passwords or API tokens here.
+# Optional D1 setup: see docs/cloudflare-pages.md.

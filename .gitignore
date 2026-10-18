@@ -43,3 +43,15 @@ sitemap-*.xml
 # generated files
 src/lib/runtime.ts
 public/manifest.json
+
+# Cloudflare local state and secrets
+.wrangler/
+.dev.vars
+.dev.vars.*
+.env.*
+
+# generated PWA assets
+public/sw.js
+public/sw.js.map
+public/workbox-*.js
+public/workbox-*.js.map
